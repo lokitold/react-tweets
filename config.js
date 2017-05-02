@@ -1,3 +1,4 @@
+console.log(process.env);
 module.exports = {
   twitter: {
     //consumer_key: 'MY_CONSUMER_KEY',
