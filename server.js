@@ -20,7 +20,13 @@ app.set('view engine', 'handlebars');
 app.disable('etag');
 
 // Connect to our mongo database
-mongoose.connect('mongodb://localhost/react-tweets');
+var dbPath = process.env.MONGODB_URI;
+if(dbPath == undefined){
+	mongoose.connect('mongodb://localhost/react-tweets');
+}else{
+	mongoose.connect(process.env.MONGODB_URI);
+}
+
 
 // Create a new ntwitter instance
 var twit = new twitter(config.twitter);
@@ -43,6 +49,6 @@ var server = http.createServer(app).listen(port, function() {
 var io = require('socket.io').listen(server);
 
 // Set a stream listener for tweets matching tracking keywords
-twit.stream('statuses/filter',{ track: 'javascript'}, function(stream){
+twit.stream('statuses/filter',{ track: '@larepublica'}, function(stream){
   streamHandler(stream,io);
 });
